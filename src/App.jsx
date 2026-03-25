@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useEmailQueue } from './hooks/useEmailQueue.js'
 import Sidebar from './components/layout/Sidebar.jsx'
 import TopBar from './components/layout/TopBar.jsx'
+import EmailList from './components/email/EmailList.jsx'
 
 const TAB_FILTERS = {
   inbox:   ['pending_review', 'draft_ready', 'failed'],
@@ -12,6 +13,7 @@ const TAB_FILTERS = {
 export default function App() {
   const [activeTab, setActiveTab] = useState('inbox')
   const [selectedRowId, setSelectedRowId] = useState(null)
+  const viewedIds = useRef(new Set())
   const { rows, loading, error, refresh } = useEmailQueue()
 
   const filteredRows = rows.filter(r => TAB_FILTERS[activeTab]?.includes(r.status))
@@ -20,6 +22,11 @@ export default function App() {
   function handleTabChange(tab) {
     setActiveTab(tab)
     setSelectedRowId(null)
+  }
+
+  function handleSelect(rowId) {
+    viewedIds.current.add(String(rowId))
+    setSelectedRowId(rowId)
   }
 
   return (
@@ -41,32 +48,14 @@ export default function App() {
             <div className="text-center py-12 text-sm" style={{ color: 'var(--muted)' }}>
               Loading emails…
             </div>
-          ) : filteredRows.length === 0 ? (
-            <div className="text-center py-12 text-sm" style={{ color: 'var(--muted)' }}>
-              No emails in this tab.
-            </div>
           ) : (
-            <div className="space-y-2">
-              {filteredRows.map(row => (
-                <div key={row.id}
-                  onClick={() => setSelectedRowId(row.id)}
-                  className="px-4 py-3 rounded-lg cursor-pointer transition-colors text-sm"
-                  style={{
-                    background: selectedRowId === row.id ? 'rgba(34,211,238,0.06)' : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${selectedRowId === row.id ? 'rgba(34,211,238,0.2)' : 'var(--border)'}`,
-                    color: 'var(--text)'
-                  }}>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium truncate mr-4">{row.email_subject || '(no subject)'}</span>
-                    {/* StatusBadge placeholder — will be replaced in Task 12 */}
-                    <span className="text-xs flex-shrink-0" style={{ color: 'var(--muted)' }}>{row.status}</span>
-                  </div>
-                  <div className="mt-1 text-xs" style={{ color: 'var(--muted)' }}>
-                    {row.email_from_name || row.email_from} · {row.email_category}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <EmailList
+              rows={filteredRows}
+              activeTab={activeTab}
+              selectedRowId={selectedRowId}
+              onSelect={handleSelect}
+              viewedIds={viewedIds.current}
+            />
           )}
         </main>
       </div>
