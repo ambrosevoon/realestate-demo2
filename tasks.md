@@ -11,7 +11,7 @@
 - [ ] Task 5: Build WFA — Generate Draft
 - [x] Task 6: Build WFC — Approve & Send (2026-03-25)
 - [x] Task 7: Build WFB + WFD — Utility Workflows (2026-03-25)
-- [ ] Task 8: Build WF1 — Email Intake
+- [x] Task 8: Build WF1 — Email Intake (2026-03-25)
 
 ## Phase 5 — React/Vite Dashboard UI
 - [ ] Task 9: Scaffold React/Vite project

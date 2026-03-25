@@ -2,7 +2,7 @@
 
 ## Current Status
 
-- **Completed:** Project initialised (CLAUDE.md, memory.md, tasks.md, docs/); Email Reply Dashboard n8n workflows — WFE, WF2G, WF2H (List Queue), WFC (Approve & Send), WFB (Mark No-Reply), WFD (Archive)
+- **Completed:** Project initialised (CLAUDE.md, memory.md, tasks.md, docs/); Email Reply Dashboard n8n workflows — WFE, WF2G, WF2H (List Queue), WFC (Approve & Send), WFB (Mark No-Reply), WFD (Archive), WF1 (Email Intake)
 - **In Progress:** Nothing
 - **Known Issues:** n8n IF v2.2 actual behaviour on this instance: branch[0] = TRUE path, branch[1] = FALSE path (opposite of task spec wording — connections must be set accordingly)
 
@@ -12,7 +12,7 @@ Phase 4 — Email Reply Dashboard (n8n workflow build)
 
 ## Immediate Goal
 
-Task 8: Build WF1 — Email Intake workflow
+Task 9: Scaffold React/Vite project
 
 ## n8n Workflow Registry — [REALESTATE DEMO]
 
@@ -24,21 +24,21 @@ Task 8: Build WF1 — Email Intake workflow
 | `IqidW8hrIY2vaPFP` | WFC – Approve & Send | `re-send` | active |
 | `ry88tCTs3oKjjhAL` | WFB – Mark No-Reply | `re-no-reply` | active |
 | `KobSqJ9sbWOCEX3o` | WFD – Archive | `re-archive` | active |
+| `DYmTKLtNP11h7kEH` | WF1 – Email Intake | Gmail Trigger (polling, everyMinute) | active |
 
 - DataTable ID: `SNuUAGKhh9vTHWlR` ([REALESTATE DEMO] Reply Queue)
 - Tag ID: `IDU4Lx7hsmT2ye97`
 
 ## Last Session Summary
 
-- 2026-03-25: Created WFB (Mark No-Reply, id `ry88tCTs3oKjjhAL`) and WFD (Archive, id `KobSqJ9sbWOCEX3o`)
-- Fixed IF Route connection ordering (n8n v2.2 on this instance routes branch[0]=TRUE, branch[1]=FALSE)
-- Fixed Update Row node to use `defineBelow` mapping (not `autoMapInputData`) to avoid "unknown column 'valid'" error
-- All tests passed: validation errors, wrong-status 409, valid WFB flow, valid WFD flow, DataTable verified
-- Docker restarted to register webhooks
+- 2026-03-25: Created WF1 Email Intake (id `DYmTKLtNP11h7kEH`) — Gmail trigger (everyMinute, INBOX+UNREAD), AI Categorizer (`@n8n/n8n-nodes-langchain.openAi` / OpenRouter AI cred `rBhtyxKU39k0lhru`), Format Data (Code), Mirror to Reply Queue (DataTable INSERT, continueOnFail)
+- Workflow activated successfully; polling every minute for new unread inbox emails
+- Tag `IDU4Lx7hsmT2ye97` applied; WF1_ID added to .env.local
+- Queue currently has 2 rows from prior testing
 
 ## Next Step
 
-Task 8: Build WF1 — Email Intake workflow (receives Gmail webhook, validates, inserts row into DataTable, triggers WFA)
+Task 9: Scaffold React/Vite project (Phase 5 — Email Reply Dashboard UI)
 
 ## Reference
 
