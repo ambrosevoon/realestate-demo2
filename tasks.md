@@ -10,17 +10,17 @@
 - [x] Task 4: Build WF2H – List Queue (Zg7u1KbICAbc1NFb, GET /re-list) (2026-03-25)
 - [x] Task 5: Build WFA – Generate Draft (gH9tI9I1U4ie2zHC, POST /re-generate-draft) (2026-03-25)
 - [x] Task 6: Build WFC – Approve & Send (IqidW8hrIY2vaPFP, POST /re-send) (2026-03-25)
-- [ ] Task 7: Build WFB + WFD – Utility Workflows
-- [ ] Task 8: Build WF1 – Email Intake
+- [x] Task 7: Build WFB + WFD – Utility Workflows (ry88tCTs3oKjjhAL / KobSqJ9sbWOCEX3o) (2026-03-25)
+- [x] Task 8: Build WF1 – Email Intake (DYmTKLtNP11h7kEH, polls every minute) (2026-03-25)
 
 ## Phase 2 — React Frontend
 - [x] Task 9: Scaffold React/Vite project (2026-03-25)
 - [x] Task 10: API layer + mock data (2026-03-25)
 - [x] Task 11: useEmailQueue hook (2026-03-25)
 - [x] Task 12: StatusBadge + layout shell (Sidebar, TopBar, App.jsx) (2026-03-25)
-- [ ] Task 13: EmailList component
-- [ ] Task 14: EmailDetail + ActionButtons
-- [ ] Task 15: Live API integration + E2E test
+- [x] Task 13: EmailList component (2026-03-25)
+- [x] Task 14: EmailDetail + ActionButtons (2026-03-25)
+- [x] Task 15: Live API integration + E2E test (2026-03-25)
 
 ## Phase 3 — Deploy
-- [ ] Task 16: Deploy to Vercel + configure CORS
+- [x] Task 16: Deploy to Vercel — https://realestate-demo2.vercel.app (2026-03-25)

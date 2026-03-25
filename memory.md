@@ -2,31 +2,29 @@
 
 ## Current Status
 
-- **Completed:** All 7 n8n workflows, React scaffold, API layer + mock data, useEmailQueue hook, StatusBadge + layout shell
-- **In Progress:** EmailList component (Task 13)
-- **Known Issues:** None
+- **Completed:** ALL TASKS COMPLETE — full system live
+- **In Progress:** Nothing
+- **Known Issues:** WFC real Gmail send test pending first real email via WF1 (synthetic message IDs can't be used for Gmail reply)
 
 ## Current Phase
 
-Phase 2 — React Frontend (Task 13: EmailList component)
+COMPLETE — All 16 tasks done across Phases 1–3
 
 ## Immediate Goal
 
-Build Task 13: EmailList component — render filtered email list with row selection and status indicators
+None — system is deployed. Next: send a real test email to Property Agent Demo Gmail to trigger WF1 → verify end-to-end flow.
 
 ## Last Session Summary (2026-03-25)
 
-- Task 11: Created useEmailQueue.js hook with mock data source (auto-refresh every 5s, pagination support)
-- Task 12: Built StatusBadge.jsx with 9 status colors + labels (pending, draft_ready, sending, sent, test, failed, archived, etc.)
-- Created Sidebar.jsx (3-tab navigation: Inbox/Sent/Archive with status-based filtering and counts)
-- Created TopBar.jsx (header with active tab label and refresh button)
-- Updated App.jsx with full layout shell — Sidebar + TopBar + email list view with row selection
-- All 4 files built successfully, committed as `feat(react): add layout shell, Sidebar, TopBar, StatusBadge`
-- Total lines added: 179
+- Tasks 6–8: Built WFC (Approve & Send), WFB (Mark No-Reply), WFD (Archive), WF1 (Email Intake with mirror node)
+- Tasks 9–15: Full React dashboard — Vite/React scaffold, API layer, useEmailQueue hook, StatusBadge, Sidebar, TopBar, EmailList, EmailDetail, ActionButtons, live API integration
+- Fixed 3 live API issues: send_failed status, locked as "0"/"1" string integers, field name consistency
+- Task 16: Deployed to https://realestate-demo2.vercel.app with vercel.json proxy for /webhook/* (no CORS config needed)
+- GitHub: https://github.com/ambrosevoon/realestate-demo2
 
 ## Next Step
 
-Build Task 13: EmailList component — extract email list rendering from App.jsx into standalone component
+End-to-end test: send a real buyer enquiry email to the Property Agent Demo Gmail → WF1 triggers → row appears in dashboard → generate draft → approve & send → verify reply in Gmail thread.
 
 ## n8n Workflow Registry
 
@@ -37,6 +35,9 @@ Build Task 13: EmailList component — extract email list rendering from App.jsx
 | Zg7u1KbICAbc1NFb | [REALESTATE DEMO] WF2H – List Queue | GET /re-list | Active |
 | gH9tI9I1U4ie2zHC | [REALESTATE DEMO] WFA – Generate Draft | POST /re-generate-draft | Active |
 | IqidW8hrIY2vaPFP | [REALESTATE DEMO] WFC – Approve & Send | POST /re-send | Active |
+| ry88tCTs3oKjjhAL | [REALESTATE DEMO] WFB – Mark No-Reply | POST /re-no-reply | Active |
+| KobSqJ9sbWOCEX3o | [REALESTATE DEMO] WFD – Archive | POST /re-archive | Active |
+| DYmTKLtNP11h7kEH | [REALESTATE DEMO] WF1 – Email Intake | Gmail Trigger (polling) | Active |
 
 ## Reference
 
