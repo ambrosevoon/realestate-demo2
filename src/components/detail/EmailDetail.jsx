@@ -19,7 +19,7 @@ export default function EmailDetail({ row, queue }) {
     setDraftText(row.draft_text || '')
   }, [row.id, row.draft_text])
 
-  const isGenerating = (row.locked === true || row.locked === 'true') && row.locked_by === 'wfa'
+  const isGenerating = (row.locked === true || row.locked === 'true' || row.locked === '1' || row.locked === 1) && row.locked_by === 'wfa'
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto' }}>
@@ -68,7 +68,7 @@ export default function EmailDetail({ row, queue }) {
       )}
 
       {/* Draft area — show for inbox statuses */}
-      {['pending_review', 'draft_ready', 'failed'].includes(row.status) && (
+      {['pending_review', 'draft_ready', 'failed', 'send_failed'].includes(row.status) && (
         <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', flex: 1 }}>
           <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--muted)', marginBottom: 8 }}>
             AI Draft Reply
@@ -97,7 +97,7 @@ export default function EmailDetail({ row, queue }) {
       )}
 
       {/* Error message */}
-      {row.status === 'failed' && row.error_message && (
+      {(row.status === 'failed' || row.status === 'send_failed') && row.error_message && (
         <div style={{ padding: '8px 24px' }}>
           <p style={{ fontSize: 12, color: '#f87171' }}>Error: {row.error_message}</p>
         </div>

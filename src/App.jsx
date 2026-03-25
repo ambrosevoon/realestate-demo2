@@ -6,7 +6,7 @@ import EmailList from './components/email/EmailList.jsx'
 import EmailDetail from './components/detail/EmailDetail.jsx'
 
 const TAB_FILTERS = {
-  inbox:   ['pending_review', 'draft_ready', 'failed'],
+  inbox:   ['pending_review', 'draft_ready', 'failed', 'send_failed'],
   sent:    ['sent', 'sent_test'],
   archive: ['archived', 'no_reply_needed'],
 }

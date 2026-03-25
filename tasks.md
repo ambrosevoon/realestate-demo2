@@ -14,13 +14,13 @@
 - [x] Task 8: Build WF1 — Email Intake (2026-03-25)
 
 ## Phase 5 — React/Vite Dashboard UI
-- [ ] Task 9: Scaffold React/Vite project
-- [ ] Task 10: API layer + mock data
-- [ ] Task 11: useEmailQueue hook
-- [ ] Task 12: StatusBadge + layout shell
-- [ ] Task 13: EmailList component
-- [ ] Task 14: EmailDetail + ActionButtons
-- [ ] Task 15: Live API integration + E2E test
+- [x] Task 9: Scaffold React/Vite project (2026-03-25)
+- [x] Task 10: API layer + mock data (2026-03-25)
+- [x] Task 11: useEmailQueue hook (2026-03-25)
+- [x] Task 12: StatusBadge + layout shell (2026-03-25)
+- [x] Task 13: EmailList component (2026-03-25)
+- [x] Task 14: EmailDetail + ActionButtons (2026-03-25)
+- [x] Task 15: Live API integration + E2E test (2026-03-25)
 - [ ] Task 16: Deploy to Vercel + configure CORS
 
 ## Phase 1 — v2 Demo Site Build

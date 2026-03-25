@@ -2,17 +2,17 @@
 
 ## Current Status
 
-- **Completed:** Project initialised (CLAUDE.md, memory.md, tasks.md, docs/); Email Reply Dashboard n8n workflows — WFE, WF2G, WF2H (List Queue), WFC (Approve & Send), WFB (Mark No-Reply), WFD (Archive), WF1 (Email Intake)
-- **In Progress:** Nothing
+- **Completed:** Project initialised; n8n workflows WFE, WF2G, WF2H, WFC, WFB, WFD, WF1; Task 9 — React/Vite scaffolded; Task 10 — API layer + mock data; Task 11 — useEmailQueue hook; Task 12 — StatusBadge + layout shell; Task 13 — EmailList; Task 14 — EmailDetail + ActionButtons; Task 15 — Live API enabled, field mismatches fixed, E2E tests passed
+- **In Progress:** None
 - **Known Issues:** n8n IF v2.2 actual behaviour on this instance: branch[0] = TRUE path, branch[1] = FALSE path (opposite of task spec wording — connections must be set accordingly)
 
 ## Current Phase
 
-Phase 4 — Email Reply Dashboard (n8n workflow build)
+Phase 5 — React/Vite Dashboard UI (Tasks 14-16 remaining)
 
 ## Immediate Goal
 
-Task 9: Scaffold React/Vite project
+Task 16: Deploy to Vercel
 
 ## n8n Workflow Registry — [REALESTATE DEMO]
 
@@ -31,14 +31,15 @@ Task 9: Scaffold React/Vite project
 
 ## Last Session Summary
 
-- 2026-03-25: Created WF1 Email Intake (id `DYmTKLtNP11h7kEH`) — Gmail trigger (everyMinute, INBOX+UNREAD), AI Categorizer (`@n8n/n8n-nodes-langchain.openAi` / OpenRouter AI cred `rBhtyxKU39k0lhru`), Format Data (Code), Mirror to Reply Queue (DataTable INSERT, continueOnFail)
-- Workflow activated successfully; polling every minute for new unread inbox emails
-- Tag `IDU4Lx7hsmT2ye97` applied; WF1_ID added to .env.local
-- Queue currently has 2 rows from prior testing
+- Task 15: Set `VITE_USE_LIVE_API=true` in `.env.local`
+- Task 15: Fixed `send_failed` status not included in inbox TAB_FILTERS (App.jsx), EmailDetail draft area, error display, and ActionButtons conditions
+- Task 15: Fixed `locked === '1'` handling — API returns locked as `"0"`/`"1"` strings, not booleans; updated isLocked and isGenerating checks in ActionButtons.jsx and EmailDetail.jsx
+- Task 15: Verified Vite proxy `/webhook/*` → n8n works correctly
+- Task 15: E2E tested all actions: list (2 rows), generate-draft (success), no-reply (success), archive (success), unlock (success); re-send skipped (would trigger real Gmail)
 
 ## Next Step
 
-Task 9: Scaffold React/Vite project (Phase 5 — Email Reply Dashboard UI)
+Task 16: Deploy to Vercel — configure environment variables (VITE_USE_LIVE_API=true, VITE_N8N_URL), set up CORS or proxy rewrite rules for `/webhook/*` routes, deploy production build
 
 ## Reference
 
@@ -46,4 +47,5 @@ Task 9: Scaffold React/Vite project (Phase 5 — Email Reply Dashboard UI)
 - n8n instance: `https://n8n.srv823907.hstgr.cloud`
 - n8n workflow ID (original demo): `K35bKpcdpjG9Fgzk`
 - Worktree: `/Users/ambrosevoon/Projects/realestate-demo2/.worktrees/feat-email-dashboard`
-- .env.local: `WFC_ID`, `WFB_ID`, `WFD_ID` set
+- .env.local: `WFC_ID`, `WFB_ID`, `WFD_ID`, `WF1_ID`, `VITE_N8N_URL`, `VITE_USE_LIVE_API` set
+- Stack: React 19, Vite 8, Tailwind CSS v4, @tailwindcss/vite

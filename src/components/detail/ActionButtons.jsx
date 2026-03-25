@@ -20,7 +20,7 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
     }
   }, [row.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const isLocked = row.locked === true || row.locked === 'true' || row.status === 'sending'
+  const isLocked = row.locked === true || row.locked === 'true' || row.locked === '1' || row.locked === 1 || row.status === 'sending'
   const disabled = isLocked || actionLoading
 
   function Btn({ label, onClick, variant = 'default', fullWidth = false }) {
@@ -82,7 +82,7 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
           <Btn label="Mark No-Reply" onClick={() => onNoReply(row.id)} variant="danger" />
         </>
       )}
-      {row.status === 'failed' && (
+      {(row.status === 'failed' || row.status === 'send_failed') && (
         <>
           <Btn
             label="Retry Draft"
@@ -97,7 +97,7 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
       {(row.status === 'sent' || row.status === 'no_reply_needed') && (
         <Btn label="Archive" onClick={() => onArchive(row.id)} />
       )}
-      {(row.status === 'failed' || isLocked) && row.status !== 'sending' && (
+      {(row.status === 'failed' || row.status === 'send_failed' || isLocked) && row.status !== 'sending' && (
         <Btn label="Unlock Row" onClick={() => onUnlock(row.id)} />
       )}
     </div>
