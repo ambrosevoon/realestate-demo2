@@ -1,49 +1,51 @@
-# memory.md — OpenHome AI Demo v2
+# memory.md — OpenHome AI Demo v2 (feat-email-dashboard)
 
 ## Current Status
 
-- **Completed:** WFE, WF2G, WF2H, WFA all live and tested
-- **In Progress:** Nothing
-- **Known Issues:** None
+- **Completed:** Project initialised; n8n workflows WFE, WF2G, WF2H, WFC, WFB, WFD, WF1; Task 9 — React/Vite scaffolded; Task 10 — API layer + mock data; Task 11 — useEmailQueue hook; Task 12 — StatusBadge + layout shell; Task 13 — EmailList; Task 14 — EmailDetail + ActionButtons; Task 15 — Live API enabled, field mismatches fixed, E2E tests passed
+- **In Progress:** None
+- **Known Issues:** n8n IF v2.2 actual behaviour on this instance: branch[0] = TRUE path, branch[1] = FALSE path (opposite of task spec wording — connections must be set accordingly)
 
 ## Current Phase
 
-Phase 1 — n8n Workflow Backend (Real Estate Email Reply Dashboard)
+Phase 5 — React/Vite Dashboard UI (Tasks 14-16 remaining)
 
 ## Immediate Goal
 
-Build Task 6: WFC – Approve & Send (send approved draft via Gmail, update status to sent)
+Task 16: Deploy to Vercel
+
+## n8n Workflow Registry — [REALESTATE DEMO]
+
+| ID | Workflow | Webhook path | Status |
+|----|----------|-------------|--------|
+| `RwrAYJx0XvSLPLA9` | WFE – Unlock & Reset | `re-unlock` | active |
+| `Qh1KnGk5BKDMgr3I` | WF2G – Get Row | `re-row` | active |
+| `(WF2H)` | WF2H – List Queue | `re-list` | active |
+| `IqidW8hrIY2vaPFP` | WFC – Approve & Send | `re-send` | active |
+| `ry88tCTs3oKjjhAL` | WFB – Mark No-Reply | `re-no-reply` | active |
+| `KobSqJ9sbWOCEX3o` | WFD – Archive | `re-archive` | active |
+| `DYmTKLtNP11h7kEH` | WF1 – Email Intake | Gmail Trigger (polling, everyMinute) | active |
+
+- DataTable ID: `SNuUAGKhh9vTHWlR` ([REALESTATE DEMO] Reply Queue)
+- Tag ID: `IDU4Lx7hsmT2ye97`
 
 ## Last Session Summary
 
-- 2026-03-25: Built WFA (ID: gH9tI9I1U4ie2zHC) — POST /webhook/re-generate-draft
-- Workflow: Webhook → Get Queue Rows → Validate Request → Route (IF v2.2) → [error path: Respond Validation Error] / [success path: Build Lock Payload → Lock Row → Build Prompt → Generate Draft (AI Agent + OpenRouter) → Build Update Payload → Write Result → Respond Result]
-- Key fix 1: IF v2.2 output 0 = true, output 1 = false (not the reverse)
-- Key fix 2: AI Agent prompt expression with single-quoted node names can't use escaped quotes — solved by adding a "Build Prompt" Code node to build promptText, then `{{ $json.promptText }}` in agent
-- Key fix 3: Respond Result must reference `$('Build Update Payload').item.json` not `$json` (DataTable UPDATE strips extra fields like success/draft_text_out)
-- Agent returns `output` field (not `message.content`) — Build Update Payload checks `$input.first().json.output`
-- E2E tests passed: validation error (missing rowId → 400), draft generation (rowId 2 → draft_ready with full AI text), row verified in DataTable
+- Task 15: Set `VITE_USE_LIVE_API=true` in `.env.local`
+- Task 15: Fixed `send_failed` status not included in inbox TAB_FILTERS (App.jsx), EmailDetail draft area, error display, and ActionButtons conditions
+- Task 15: Fixed `locked === '1'` handling — API returns locked as `"0"`/`"1"` strings, not booleans; updated isLocked and isGenerating checks in ActionButtons.jsx and EmailDetail.jsx
+- Task 15: Verified Vite proxy `/webhook/*` → n8n works correctly
+- Task 15: E2E tested all actions: list (2 rows), generate-draft (success), no-reply (success), archive (success), unlock (success); re-send skipped (would trigger real Gmail)
 
 ## Next Step
 
-Build Task 6: WFC – Approve & Send
-- Webhook: POST /re-approve-send
-- Input: `{ rowId }` — reads row, sends draft_text via Gmail, updates status to `sent`
-- Must validate status is `draft_ready`, lock row, send via Gmail node, unlock and write sent_at + sent_message_id
-
-## n8n Workflow Registry
-
-| ID | Name | Webhook | Status |
-|----|------|---------|--------|
-| RwrAYJx0XvSLPLA9 | [REALESTATE DEMO] WFE – Unlock & Reset | POST /re-unlock | Active |
-| Qh1KnGk5BKDMgr3I | [REALESTATE DEMO] WF2G – Get Row | GET /re-row | Active |
-| Zg7u1KbICAbc1NFb | [REALESTATE DEMO] WF2H – List Queue | GET /re-list | Active |
-| gH9tI9I1U4ie2zHC | [REALESTATE DEMO] WFA – Generate Draft | POST /re-generate-draft | Active |
+Task 16: Deploy to Vercel — configure environment variables (VITE_USE_LIVE_API=true, VITE_N8N_URL), set up CORS or proxy rewrite rules for `/webhook/*` routes, deploy production build
 
 ## Reference
 
 - v1 project: `/Users/ambrosevoon/Projects/realestate-demo`
-- n8n webhook: `https://n8n.srv823907.hstgr.cloud/webhook/real-estate-chat`
-- n8n workflow ID: `K35bKpcdpjG9Fgzk`
-- DataTable: `[REALESTATE DEMO] Reply Queue`, ID: `SNuUAGKhh9vTHWlR`
-- Tag: `REALESTATE DEMO`, ID: `IDU4Lx7hsmT2ye97`
+- n8n instance: `https://n8n.srv823907.hstgr.cloud`
+- n8n workflow ID (original demo): `K35bKpcdpjG9Fgzk`
+- Worktree: `/Users/ambrosevoon/Projects/realestate-demo2/.worktrees/feat-email-dashboard`
+- .env.local: `WFC_ID`, `WFB_ID`, `WFD_ID`, `WF1_ID`, `VITE_N8N_URL`, `VITE_USE_LIVE_API` set
+- Stack: React 19, Vite 8, Tailwind CSS v4, @tailwindcss/vite
