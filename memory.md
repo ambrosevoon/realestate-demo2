@@ -1,51 +1,47 @@
-# memory.md — OpenHome AI Demo v2 (feat-email-dashboard)
+# memory.md — OpenHome AI Demo v2
 
 ## Current Status
 
-- **Completed:** Project initialised; n8n workflows WFE, WF2G, WF2H, WFC, WFB, WFD, WF1; Task 9 — React/Vite scaffolded; Task 10 — API layer + mock data; Task 11 — useEmailQueue hook; Task 12 — StatusBadge + layout shell; Task 13 — EmailList; Task 14 — EmailDetail + ActionButtons; Task 15 — Live API enabled, field mismatches fixed, E2E tests passed
-- **In Progress:** None
-- **Known Issues:** n8n IF v2.2 actual behaviour on this instance: branch[0] = TRUE path, branch[1] = FALSE path (opposite of task spec wording — connections must be set accordingly)
+- **Completed:** All 7 n8n workflows, React scaffold, API layer + mock data, useEmailQueue hook, StatusBadge + layout shell
+- **In Progress:** EmailList component (Task 13)
+- **Known Issues:** None
 
 ## Current Phase
 
-Phase 5 — React/Vite Dashboard UI (Tasks 14-16 remaining)
+Phase 2 — React Frontend (Task 13: EmailList component)
 
 ## Immediate Goal
 
-Task 16: Deploy to Vercel
+Build Task 13: EmailList component — render filtered email list with row selection and status indicators
 
-## n8n Workflow Registry — [REALESTATE DEMO]
+## Last Session Summary (2026-03-25)
 
-| ID | Workflow | Webhook path | Status |
-|----|----------|-------------|--------|
-| `RwrAYJx0XvSLPLA9` | WFE – Unlock & Reset | `re-unlock` | active |
-| `Qh1KnGk5BKDMgr3I` | WF2G – Get Row | `re-row` | active |
-| `(WF2H)` | WF2H – List Queue | `re-list` | active |
-| `IqidW8hrIY2vaPFP` | WFC – Approve & Send | `re-send` | active |
-| `ry88tCTs3oKjjhAL` | WFB – Mark No-Reply | `re-no-reply` | active |
-| `KobSqJ9sbWOCEX3o` | WFD – Archive | `re-archive` | active |
-| `DYmTKLtNP11h7kEH` | WF1 – Email Intake | Gmail Trigger (polling, everyMinute) | active |
-
-- DataTable ID: `SNuUAGKhh9vTHWlR` ([REALESTATE DEMO] Reply Queue)
-- Tag ID: `IDU4Lx7hsmT2ye97`
-
-## Last Session Summary
-
-- Task 15: Set `VITE_USE_LIVE_API=true` in `.env.local`
-- Task 15: Fixed `send_failed` status not included in inbox TAB_FILTERS (App.jsx), EmailDetail draft area, error display, and ActionButtons conditions
-- Task 15: Fixed `locked === '1'` handling — API returns locked as `"0"`/`"1"` strings, not booleans; updated isLocked and isGenerating checks in ActionButtons.jsx and EmailDetail.jsx
-- Task 15: Verified Vite proxy `/webhook/*` → n8n works correctly
-- Task 15: E2E tested all actions: list (2 rows), generate-draft (success), no-reply (success), archive (success), unlock (success); re-send skipped (would trigger real Gmail)
+- Task 11: Created useEmailQueue.js hook with mock data source (auto-refresh every 5s, pagination support)
+- Task 12: Built StatusBadge.jsx with 9 status colors + labels (pending, draft_ready, sending, sent, test, failed, archived, etc.)
+- Created Sidebar.jsx (3-tab navigation: Inbox/Sent/Archive with status-based filtering and counts)
+- Created TopBar.jsx (header with active tab label and refresh button)
+- Updated App.jsx with full layout shell — Sidebar + TopBar + email list view with row selection
+- All 4 files built successfully, committed as `feat(react): add layout shell, Sidebar, TopBar, StatusBadge`
+- Total lines added: 179
 
 ## Next Step
 
-Task 16: Deploy to Vercel — configure environment variables (VITE_USE_LIVE_API=true, VITE_N8N_URL), set up CORS or proxy rewrite rules for `/webhook/*` routes, deploy production build
+Build Task 13: EmailList component — extract email list rendering from App.jsx into standalone component
+
+## n8n Workflow Registry
+
+| ID | Name | Webhook | Status |
+|----|------|---------|--------|
+| RwrAYJx0XvSLPLA9 | [REALESTATE DEMO] WFE – Unlock & Reset | POST /re-unlock | Active |
+| Qh1KnGk5BKDMgr3I | [REALESTATE DEMO] WF2G – Get Row | GET /re-row | Active |
+| Zg7u1KbICAbc1NFb | [REALESTATE DEMO] WF2H – List Queue | GET /re-list | Active |
+| gH9tI9I1U4ie2zHC | [REALESTATE DEMO] WFA – Generate Draft | POST /re-generate-draft | Active |
+| IqidW8hrIY2vaPFP | [REALESTATE DEMO] WFC – Approve & Send | POST /re-send | Active |
 
 ## Reference
 
 - v1 project: `/Users/ambrosevoon/Projects/realestate-demo`
-- n8n instance: `https://n8n.srv823907.hstgr.cloud`
-- n8n workflow ID (original demo): `K35bKpcdpjG9Fgzk`
-- Worktree: `/Users/ambrosevoon/Projects/realestate-demo2/.worktrees/feat-email-dashboard`
-- .env.local: `WFC_ID`, `WFB_ID`, `WFD_ID`, `WF1_ID`, `VITE_N8N_URL`, `VITE_USE_LIVE_API` set
-- Stack: React 19, Vite 8, Tailwind CSS v4, @tailwindcss/vite
+- n8n webhook: `https://n8n.srv823907.hstgr.cloud/webhook/real-estate-chat`
+- n8n workflow ID: `K35bKpcdpjG9Fgzk`
+- DataTable: `[REALESTATE DEMO] Reply Queue`, ID: `SNuUAGKhh9vTHWlR`
+- Tag: `REALESTATE DEMO`, ID: `IDU4Lx7hsmT2ye97`
