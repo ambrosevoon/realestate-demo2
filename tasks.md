@@ -3,20 +3,24 @@
 ## Phase 0 — Setup
 - [x] Initialise repo and create CLAUDE.md, memory.md, tasks.md (2026-03-25)
 
-## Phase 1 — v2 Build
-- [ ] Define scope: what changes from v1
-- [ ] Build index.html structure
-- [ ] Write css/main.css
-- [ ] Write js/config.js with updated property/agency data
-- [ ] Write js/chat.js (ChatWidget)
-- [ ] Write js/voice.js (VoiceWidget)
-- [ ] Write js/app.js (page behaviour)
-- [ ] Write prompts/ system prompt templates
-- [ ] Test chat flow end-to-end with n8n webhook
-- [ ] Test voice flow end-to-end with n8n webhook
-- [ ] Cross-browser/responsive QA
+## Phase 1 — n8n Workflow Backend
+- [x] Task 1: Create [REALESTATE DEMO] Reply Queue Data Table (SNuUAGKhh9vTHWlR) (2026-03-25)
+- [x] Task 2: Build WFE – Unlock & Reset (RwrAYJx0XvSLPLA9, POST /re-unlock) (2026-03-25)
+- [ ] Task 3: Build WF2G – Get Row
+- [ ] Task 4: Build WF2H – List Queue
+- [ ] Task 5: Build WFA – Generate Draft
+- [ ] Task 6: Build WFC – Approve & Send
+- [ ] Task 7: Build WFB + WFD – Utility Workflows
+- [ ] Task 8: Build WF1 – Email Intake
 
-## Phase 2 — Deploy
-- [ ] Choose hosting (static host / VPS)
-- [ ] Deploy and verify production webhook URL
-- [ ] Update Google Sheets spreadsheetId in n8n workflow
+## Phase 2 — React Frontend
+- [ ] Task 9: Scaffold React/Vite project
+- [ ] Task 10: API layer + mock data
+- [ ] Task 11: useEmailQueue hook
+- [ ] Task 12: StatusBadge + layout shell
+- [ ] Task 13: EmailList component
+- [ ] Task 14: EmailDetail + ActionButtons
+- [ ] Task 15: Live API integration + E2E test
+
+## Phase 3 — Deploy
+- [ ] Task 16: Deploy to Vercel + configure CORS
