@@ -260,10 +260,7 @@ export function Hero195() {
   const listPane = showList && (
     <div
       className="overflow-y-auto"
-      style={isMobile
-        ? { flex: 1 }
-        : { width: 320, flexShrink: 0, borderRight: '1px solid var(--border)' }
-      }
+      style={{ width: 320, flexShrink: 0, borderRight: '1px solid var(--border)' }}
     >
       {loading && rows.length === 0 ? (
         <div className="flex flex-col gap-3 p-4">
@@ -299,7 +296,7 @@ export function Hero195() {
   // ── Detail pane ──
 
   const detailPane = showDetail && (
-    <div className="flex-1 overflow-hidden">
+    <div className="flex-1 min-h-0 overflow-y-auto">
       {selectedRow ? (
         <EmailDetail key={selectedRow.id} row={selectedRow} queue={queue} />
       ) : (
@@ -312,18 +309,46 @@ export function Hero195() {
 
   if (isMobile) {
     return (
-      <div className="flex flex-col h-screen overflow-hidden" style={{ background: 'var(--bg)' }}>
+      <div className="flex flex-col h-screen" style={{ background: 'var(--bg)' }}>
         {header}
-        {/* On mobile: list view or detail view — never both */}
         {selectedRow ? (
-          <div className="flex-1 overflow-hidden">
-            {detailPane}
+          /* Detail view — fills remaining height, scrolls internally */
+          <div className="flex-1 min-h-0 flex flex-col">
+            <div className="flex-1 min-h-0 overflow-y-auto">
+              {selectedRow && <EmailDetail key={selectedRow.id} row={selectedRow} queue={queue} />}
+            </div>
           </div>
         ) : (
+          /* List view — tabs fixed, list scrolls */
           <>
             {tabsBar}
-            <div className="flex-1 overflow-hidden">
-              {listPane}
+            <div className="flex-1 min-h-0 overflow-y-auto">
+              <div className="p-3">
+                {loading && rows.length === 0 ? (
+                  <div className="flex flex-col gap-3">
+                    {[1,2,3].map(i => <div key={i} className="shimmer-box h-20 rounded-lg" />)}
+                  </div>
+                ) : filteredRows.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-48 gap-2 text-sm"
+                    style={{ color: 'var(--muted-foreground)' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                      style={{ opacity: 0.4 }}>
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    No emails here
+                  </div>
+                ) : (
+                  <EmailList
+                    rows={filteredRows}
+                    activeTab={activeTab}
+                    selectedRowId={selectedRowId}
+                    onSelect={handleSelect}
+                    viewedIds={viewedIds.current}
+                  />
+                )}
+              </div>
             </div>
           </>
         )}
@@ -336,7 +361,7 @@ export function Hero195() {
     <div className="flex flex-col h-screen overflow-hidden" style={{ background: 'var(--bg)' }}>
       {header}
       {tabsBar}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex min-h-0">
         {listPane}
         {detailPane}
       </div>

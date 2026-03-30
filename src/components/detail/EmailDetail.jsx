@@ -26,7 +26,7 @@ export default function EmailDetail({ row, queue }) {
   const isGenerating = (row.locked === true || row.locked === 'true' || row.locked === '1' || row.locked === 1) && row.locked_by === 'wfa'
 
   return (
-    <div className="animate-fade-slide-up" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto' }}>
+    <div className="animate-fade-slide-up" style={{ display: 'flex', flexDirection: 'column' }}>
 
       {/* ── Header ─────────────────────────────────── */}
       <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
