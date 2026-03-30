@@ -1,5 +1,6 @@
 // src/components/detail/ActionButtons.jsx
 import { useEffect, useRef, useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onArchive, onUnlock }) {
   const generatingRef = useRef(null)
@@ -14,7 +15,6 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
         setActionLoading(false)
       })
     }
-    // When row changes to a different row, reset flag
     return () => {
       if (generatingRef.current !== row.id) generatingRef.current = null
     }
@@ -22,33 +22,6 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
 
   const isLocked = row.locked === true || row.locked === 'true' || row.locked === '1' || row.locked === 1 || row.status === 'sending'
   const disabled = isLocked || actionLoading
-
-  function Btn({ label, onClick, variant = 'default', fullWidth = false }) {
-    const styles = {
-      primary: { background: '#22d3ee', color: '#000', border: 'none' },
-      danger:  { background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)' },
-      default: { background: 'var(--topbar-btn-bg)', color: 'var(--text)', border: '1px solid var(--border)' },
-    }
-    return (
-      <button
-        onClick={onClick}
-        disabled={disabled}
-        className="btn-interactive"
-        style={{
-          ...styles[variant],
-          padding: '6px 12px',
-          borderRadius: '6px',
-          fontSize: '12px',
-          fontWeight: 500,
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          opacity: disabled ? 0.4 : 1,
-          width: fullWidth ? '100%' : undefined,
-        }}
-      >
-        {label}
-      </button>
-    )
-  }
 
   if (row.status === 'archived') return null
   if (row.status === 'sending') {
@@ -59,46 +32,70 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
       {row.status === 'pending_review' && (
         <>
-          <Btn
-            label={actionLoading ? 'Generating…' : 'Generate Draft'}
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={disabled}
             onClick={() => {
               setActionLoading(true)
               onGenerate(row.id).catch(() => {}).finally(() => setActionLoading(false))
             }}
-          />
-          <Btn label="Mark No-Reply" onClick={() => onNoReply(row.id)} variant="danger" />
+          >
+            {actionLoading ? 'Generating…' : 'Generate Draft'}
+          </Button>
+          <Button size="sm" variant="destructive" disabled={disabled} onClick={() => onNoReply(row.id)}>
+            Mark No-Reply
+          </Button>
         </>
       )}
       {row.status === 'draft_ready' && (
         <>
-          <Btn label="Approve & Send" onClick={() => onSend(row.id)} variant="primary" />
-          <Btn
-            label="Regenerate Draft"
+          <Button size="sm" variant="default" disabled={disabled} onClick={() => onSend(row.id)}>
+            Approve &amp; Send
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={disabled}
             onClick={() => {
               setActionLoading(true)
               onGenerate(row.id).catch(() => {}).finally(() => setActionLoading(false))
             }}
-          />
-          <Btn label="Mark No-Reply" onClick={() => onNoReply(row.id)} variant="danger" />
+          >
+            Regenerate Draft
+          </Button>
+          <Button size="sm" variant="destructive" disabled={disabled} onClick={() => onNoReply(row.id)}>
+            Mark No-Reply
+          </Button>
         </>
       )}
       {(row.status === 'failed' || row.status === 'send_failed') && (
         <>
-          <Btn
-            label="Retry Draft"
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={disabled}
             onClick={() => {
               setActionLoading(true)
               onGenerate(row.id).catch(() => {}).finally(() => setActionLoading(false))
             }}
-          />
-          <Btn label="Mark No-Reply" onClick={() => onNoReply(row.id)} variant="danger" />
+          >
+            Retry Draft
+          </Button>
+          <Button size="sm" variant="destructive" disabled={disabled} onClick={() => onNoReply(row.id)}>
+            Mark No-Reply
+          </Button>
         </>
       )}
       {(row.status === 'sent' || row.status === 'no_reply_needed') && (
-        <Btn label="Archive" onClick={() => onArchive(row.id)} />
+        <Button size="sm" variant="secondary" disabled={disabled} onClick={() => onArchive(row.id)}>
+          Archive
+        </Button>
       )}
       {(row.status === 'failed' || row.status === 'send_failed' || isLocked) && row.status !== 'sending' && (
-        <Btn label="Unlock Row" onClick={() => onUnlock(row.id)} />
+        <Button size="sm" variant="secondary" disabled={false} onClick={() => onUnlock(row.id)}>
+          Unlock Row
+        </Button>
       )}
     </div>
   )
