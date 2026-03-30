@@ -1,5 +1,7 @@
 // src/hooks/useEmailQueue.js
 import { useState, useEffect, useRef, useCallback } from 'react'
+
+const POLL_INTERVAL = 30_000
 import {
   listQueue,
   generateDraft as apiGenerateDraft,
@@ -16,6 +18,7 @@ export function useEmailQueue() {
   const [error, setError] = useState(null)
   const [actionInProgress, setActionInProgress] = useState(false)
   const pollRef = useRef(null)
+  const actionInProgressRef = useRef(false)
 
   const refresh = useCallback(async (silent = false) => {
     if (!silent) setLoading(true)
@@ -31,16 +34,17 @@ export function useEmailQueue() {
     }
   }, [])
 
-  // Initial load + 60s auto-poll
+  // Initial load + 30s auto-poll
   useEffect(() => {
     refresh()
     pollRef.current = setInterval(() => {
-      if (!actionInProgress) refresh(true)
-    }, 60_000)
+      if (!actionInProgressRef.current) refresh(true)
+    }, POLL_INTERVAL)
     return () => clearInterval(pollRef.current)
-  }, [refresh, actionInProgress])
+  }, [refresh])
 
   async function withAction(fn) {
+    actionInProgressRef.current = true
     setActionInProgress(true)
     setError(null)
     try {
@@ -51,6 +55,7 @@ export function useEmailQueue() {
       setError(err.message)
       throw err
     } finally {
+      actionInProgressRef.current = false
       setActionInProgress(false)
     }
   }

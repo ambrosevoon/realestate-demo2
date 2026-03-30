@@ -22,7 +22,7 @@ export default function EmailDetail({ row, queue }) {
   const isGenerating = (row.locked === true || row.locked === 'true' || row.locked === '1' || row.locked === 1) && row.locked_by === 'wfa'
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto' }}>
+    <div className="animate-fade-slide-up" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
@@ -31,12 +31,12 @@ export default function EmailDetail({ row, queue }) {
               {row.email_subject || '(no subject)'}
             </h2>
             <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 2 }}>
-              From: <span style={{ color: '#e2e8f0' }}>{row.email_from_name || row.email_from}</span>
+              From: <span style={{ color: 'var(--text-strong)' }}>{row.email_from_name || row.email_from}</span>
               {row.email_from_name && <span style={{ color: 'var(--muted)' }}> &lt;{row.email_from}&gt;</span>}
             </p>
             {row.customer_phone && (
               <p style={{ fontSize: 13, color: 'var(--muted)' }}>
-                Phone: <span style={{ color: '#e2e8f0' }}>{row.customer_phone}</span>
+                Phone: <span style={{ color: 'var(--text-strong)' }}>{row.customer_phone}</span>
               </p>
             )}
             <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>
@@ -59,7 +59,7 @@ export default function EmailDetail({ row, queue }) {
 
       {/* AI Summary */}
       {row.email_summary && (
-        <div style={{ padding: '12px 24px', borderBottom: '1px solid var(--border)', background: 'rgba(34,211,238,0.03)' }}>
+        <div className="animate-fade-in" style={{ padding: '12px 24px', borderBottom: '1px solid var(--border)', background: 'rgba(34,211,238,0.03)', animationDelay: '0.08s' }}>
           <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--accent)', marginBottom: 6 }}>
             AI Summary
           </p>
@@ -69,27 +69,28 @@ export default function EmailDetail({ row, queue }) {
 
       {/* Draft area — show for inbox statuses */}
       {['pending_review', 'draft_ready', 'failed', 'send_failed'].includes(row.status) && (
-        <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', flex: 1 }}>
+        <div className="animate-fade-in" style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', flex: 1, animationDelay: '0.14s' }}>
           <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--muted)', marginBottom: 8 }}>
             AI Draft Reply
           </p>
           {isGenerating ? (
-            <div style={{
-              minHeight: 120, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'var(--surface)', border: '1px solid var(--border)', fontSize: 13, color: 'var(--muted)'
+            <div className="shimmer-box" style={{
+              minHeight: 320, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              border: '1px solid var(--border)', fontSize: 13, color: 'var(--muted)'
             }}>
               Generating draft…
             </div>
           ) : (
             <textarea
+              className="draft-textarea"
               value={draftText}
               onChange={e => setDraftText(e.target.value)}
               placeholder="Draft will appear here once generated…"
               style={{
-                width: '100%', minHeight: 160, padding: 12, borderRadius: 8, resize: 'vertical',
+                width: '100%', minHeight: 320, padding: 12, borderRadius: 8, resize: 'vertical',
                 background: 'var(--surface)', border: '1px solid var(--border)',
                 color: 'var(--text)', fontSize: 13, lineHeight: 1.6,
-                outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
+                fontFamily: 'inherit', boxSizing: 'border-box',
               }}
             />
           )}

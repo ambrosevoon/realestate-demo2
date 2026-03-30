@@ -27,12 +27,13 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
     const styles = {
       primary: { background: '#22d3ee', color: '#000', border: 'none' },
       danger:  { background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)' },
-      default: { background: 'rgba(255,255,255,0.07)', color: '#cbd5e1', border: '1px solid rgba(255,255,255,0.1)' },
+      default: { background: 'var(--topbar-btn-bg)', color: 'var(--text)', border: '1px solid var(--border)' },
     }
     return (
       <button
         onClick={onClick}
         disabled={disabled}
+        className="btn-interactive"
         style={{
           ...styles[variant],
           padding: '6px 12px',
@@ -41,7 +42,6 @@ export default function ActionButtons({ row, onGenerate, onSend, onNoReply, onAr
           fontWeight: 500,
           cursor: disabled ? 'not-allowed' : 'pointer',
           opacity: disabled ? 0.4 : 1,
-          transition: 'opacity 0.15s',
           width: fullWidth ? '100%' : undefined,
         }}
       >

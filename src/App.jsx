@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { useEmailQueue } from './hooks/useEmailQueue.js'
+import { useTheme } from './hooks/useTheme.js'
 import Sidebar from './components/layout/Sidebar.jsx'
 import TopBar from './components/layout/TopBar.jsx'
 import EmailList from './components/email/EmailList.jsx'
@@ -17,6 +18,7 @@ export default function App() {
   const viewedIds = useRef(new Set())
   const queue = useEmailQueue()
   const { rows, loading, error, refresh } = queue
+  const { theme, toggleTheme } = useTheme()
 
   const filteredRows = rows.filter(r => TAB_FILTERS[activeTab]?.includes(r.status))
   const selectedRow = rows.find(r => String(r.id) === String(selectedRowId)) || null
@@ -36,7 +38,7 @@ export default function App() {
       <Sidebar activeTab={activeTab} onTabChange={handleTabChange} rows={rows} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopBar activeTab={activeTab} onRefresh={refresh} loading={loading} />
+        <TopBar activeTab={activeTab} onRefresh={() => refresh()} loading={loading} theme={theme} onToggleTheme={toggleTheme} />
 
         {error && (
           <div className="mx-6 mt-4 px-4 py-3 rounded-lg text-sm"
@@ -66,7 +68,7 @@ export default function App() {
           {/* Right pane — email detail */}
           <div className="flex-1 overflow-hidden">
             {selectedRow ? (
-              <EmailDetail row={selectedRow} queue={queue} />
+              <EmailDetail key={selectedRow.id} row={selectedRow} queue={queue} />
             ) : (
               <div className="flex items-center justify-center h-full text-sm" style={{ color: 'var(--muted)' }}>
                 Select an email to view details

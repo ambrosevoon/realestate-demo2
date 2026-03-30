@@ -24,3 +24,14 @@
 
 ## Phase 3 — Deploy
 - [x] Task 16: Deploy to Vercel — https://realestate-demo2.vercel.app (2026-03-25)
+
+## Phase 4 — Fixes & Redesign (Session 2 — 2026-03-30)
+- [x] Fix: VITE_USE_LIVE_API env var had trailing \n — dashboard was always showing mock data (2026-03-30)
+- [x] Fix: WF1 Format Data node used .first() instead of .item — only 1 email saved per batch (2026-03-30)
+- [x] Rebrand: page title updated from "emaildash" to "SmartFlow | Email Dashboard" (2026-03-30)
+- [ ] Task 17: Install framer-motion, gsap, @radix-ui/react-slot, class-variance-authority, clsx, tailwind-merge
+- [ ] Task 18: Set up @/ path alias + cn utility
+- [ ] Task 19: Create ui/button.jsx + ui/AnimatedGroup.jsx
+- [ ] Task 20: Redesign theme — warm gradient palette (purple accent, 21st.dev style)
+- [ ] Task 21: Apply GSAP gradient animation to Sidebar
+- [ ] Task 22: Add framer-motion blur-fade animations to EmailList items
