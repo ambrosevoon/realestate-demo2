@@ -73,8 +73,9 @@ export function Hero195() {
 
       {/* ── Top Header Bar ───────────────────────────── */}
       <header
-        className="flex items-center justify-between px-6 h-14 flex-shrink-0 border-b"
+        className="flex items-center justify-between px-6 flex-shrink-0 border-b"
         style={{
+          height: 64,
           borderColor: 'var(--border)',
           background: 'var(--sidebar-bg)',
           backdropFilter: 'blur(16px)',
@@ -82,26 +83,43 @@ export function Hero195() {
         }}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-7 h-7 rounded-lg"
-            style={{ background: 'linear-gradient(135deg, var(--dash-accent), var(--dash-accent-2))' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-              fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
+        <div className="flex items-center gap-3.5">
+          {/* Icon mark */}
+          <div style={{
+            width: 42, height: 42, borderRadius: 11, flexShrink: 0,
+            background: 'linear-gradient(145deg, #9333ea 0%, #c026d3 50%, #ec4899 100%)',
+            boxShadow: '0 4px 16px rgba(147,51,234,0.45), inset 0 1px 0 rgba(255,255,255,0.18)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            {/* Stylised SF monogram: lightning bolt (speed) + flow arrows */}
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Lightning bolt — represents "Smart" */}
+              <path d="M13 2L4.5 13.5H11.5L11 22L19.5 10.5H12.5L13 2Z"
+                fill="white" fillOpacity="0.95" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5"/>
             </svg>
           </div>
-          <div>
-            <span className="text-sm font-semibold" style={{
-              background: 'linear-gradient(135deg, var(--dash-accent), var(--dash-accent-2))',
+
+          {/* Brand text */}
+          <div className="flex flex-col justify-center" style={{ gap: 1 }}>
+            <span style={{
+              fontSize: 19,
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
+              background: 'linear-gradient(135deg, #9333ea 0%, #ec4899 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>
               SmartFlow
             </span>
-            <span className="text-xs ml-1.5" style={{ color: 'var(--muted-foreground)' }}>
-              Email Dashboard
+            <span style={{
+              fontSize: 11,
+              fontWeight: 500,
+              color: 'var(--muted-foreground)',
+              letterSpacing: '0.01em',
+            }}>
+              Intelligent outreach, automated.
             </span>
           </div>
         </div>
