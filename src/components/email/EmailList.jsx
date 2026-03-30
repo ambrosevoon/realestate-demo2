@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import StatusBadge from '../ui/StatusBadge.jsx'
 import { AnimatedGroup } from '../ui/AnimatedGroup.jsx'
+import { BorderBeam } from '../ui/border-beam.jsx'
 
 const CATEGORY_LABELS = {
   inquiry: 'Enquiry',
@@ -21,6 +22,7 @@ function formatRelativeTime(dateStr) {
   return `${Math.floor(hrs / 24)}d ago`
 }
 
+// eslint-disable-next-line no-unused-vars
 export default function EmailList({ rows, activeTab, selectedRowId, onSelect, viewedIds }) {
   const [categoryFilter, setCategoryFilter] = useState(null)
 
@@ -48,8 +50,8 @@ export default function EmailList({ rows, activeTab, selectedRowId, onSelect, vi
             className="filter-chip px-2.5 py-1 rounded-full text-xs font-medium"
             style={{
               background: !categoryFilter ? 'rgba(168,85,247,0.15)' : 'var(--tag-bg)',
-              color: !categoryFilter ? 'var(--accent)' : 'var(--muted)',
-              border: `1px solid ${!categoryFilter ? 'rgba(168,85,247,0.35)' : 'var(--border)'}`,
+              color: !categoryFilter ? 'var(--dash-accent)' : 'var(--muted-foreground)',
+              border: `1px solid ${!categoryFilter ? 'rgba(147,51,234,0.35)' : 'var(--border)'}`,
             }}
           >
             All
@@ -61,8 +63,8 @@ export default function EmailList({ rows, activeTab, selectedRowId, onSelect, vi
               className="filter-chip px-2.5 py-1 rounded-full text-xs font-medium"
               style={{
                 background: categoryFilter === cat ? 'rgba(168,85,247,0.15)' : 'var(--tag-bg)',
-                color: categoryFilter === cat ? 'var(--accent)' : 'var(--muted)',
-                border: `1px solid ${categoryFilter === cat ? 'rgba(168,85,247,0.35)' : 'var(--border)'}`,
+                color: categoryFilter === cat ? 'var(--dash-accent)' : 'var(--muted-foreground)',
+                border: `1px solid ${categoryFilter === cat ? 'rgba(147,51,234,0.35)' : 'var(--border)'}`,
               }}
             >
               {CATEGORY_LABELS[cat] || cat}
@@ -73,7 +75,7 @@ export default function EmailList({ rows, activeTab, selectedRowId, onSelect, vi
 
       {/* List */}
       {displayed.length === 0 ? (
-        <div className="text-center py-12 text-sm animate-fade-in" style={{ color: 'var(--muted)' }}>
+        <div className="text-center py-12 text-sm animate-fade-in" style={{ color: 'var(--muted-foreground)' }}>
           No emails in this view.
         </div>
       ) : (
@@ -95,7 +97,7 @@ export default function EmailList({ rows, activeTab, selectedRowId, onSelect, vi
               <div
                 key={row.id}
                 onClick={() => onSelect(row.id)}
-                className="email-item px-4 py-3 rounded-lg cursor-pointer text-sm"
+                className="email-item relative px-4 py-3 rounded-lg cursor-pointer text-sm overflow-hidden"
                 style={{
                   background: isSelected
                     ? 'var(--card-selected-bg)'
@@ -113,17 +115,20 @@ export default function EmailList({ rows, activeTab, selectedRowId, onSelect, vi
                   WebkitBackdropFilter: 'blur(8px)',
                 }}
               >
+                {isSelected && (
+                  <BorderBeam size={120} duration={4} colorFrom="var(--dash-accent)" colorTo="var(--dash-accent-2)" />
+                )}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-2 min-w-0">
                     <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${priorityDot(row.priority)} ${isUnviewed ? 'dot-pulse' : ''}`} />
                     <div className="min-w-0">
-                      <div className="font-medium truncate" style={{ color: isUnviewed ? 'var(--text-strong)' : 'var(--text)' }}>
+                      <div className="font-medium truncate" style={{ color: isUnviewed ? 'var(--foreground)' : 'var(--foreground)' }}>
                         {row.email_subject || '(no subject)'}
                       </div>
-                      <div className="text-xs mt-0.5 truncate" style={{ color: 'var(--muted)' }}>
+                      <div className="text-xs mt-0.5 truncate" style={{ color: 'var(--muted-foreground)' }}>
                         {row.email_from_name || row.email_from}
                         {row.email_category && (
-                          <span className="ml-1.5 px-1 py-0.5 rounded text-xs" style={{ background: 'var(--tag-bg)', color: 'var(--muted)' }}>
+                          <span className="ml-1.5 px-1 py-0.5 rounded text-xs" style={{ background: 'var(--tag-bg)', color: 'var(--muted-foreground)' }}>
                             {CATEGORY_LABELS[row.email_category] || row.email_category}
                           </span>
                         )}
@@ -132,7 +137,7 @@ export default function EmailList({ rows, activeTab, selectedRowId, onSelect, vi
                   </div>
                   <div className="flex flex-col items-end gap-1 flex-shrink-0">
                     <StatusBadge status={row.status} />
-                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                    <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
                       {formatRelativeTime(row.received_at)}
                     </span>
                   </div>
