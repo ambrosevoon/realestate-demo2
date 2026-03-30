@@ -98,7 +98,7 @@ export default function EmailDetail({ row, queue }) {
             <div style={{ fontSize: 13, color: 'var(--dash-accent)' }}>Sending email…</div>
           ) : isGenerating ? (
             <div className="shimmer-box" style={{
-              minHeight: 240, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              minHeight: 'clamp(120px, 25vh, 240px)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
               border: '1px solid var(--border)', fontSize: 13, color: 'var(--muted-foreground)',
             }}>
               Generating draft…
@@ -110,7 +110,7 @@ export default function EmailDetail({ row, queue }) {
               onChange={e => setDraftText(e.target.value)}
               placeholder="Draft will appear here once generated…"
               style={{
-                width: '100%', minHeight: 240, padding: 12, borderRadius: 8, resize: 'vertical',
+                width: '100%', minHeight: 'clamp(160px, 30vh, 320px)', padding: 12, borderRadius: 8, resize: 'vertical',
                 background: 'var(--surface)', border: '1px solid var(--border)',
                 color: 'var(--foreground)', fontSize: 13, lineHeight: 1.6,
                 fontFamily: 'inherit', boxSizing: 'border-box',
