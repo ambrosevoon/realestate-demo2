@@ -228,18 +228,18 @@ body {
 /* ── Interactive buttons ───────────────────────────── */
 
 .btn-interactive {
-  transition: transform 0.12s var(--ease-out-quart),
-              opacity 0.12s,
-              box-shadow 0.15s var(--ease-out-quart),
-              background 0.15s;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.18s var(--ease-out-quart),
+              background 0.15s,
+              opacity 0.12s;
 }
 .btn-interactive:hover:not(:disabled) {
-  transform: translateY(-1px) scale(1.025);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
 }
 .btn-interactive:active:not(:disabled) {
-  transform: scale(0.96);
-  transition-duration: 0.07s;
+  transform: scale(0.95);
+  transition-duration: 0.08s, 0.08s, 0.08s, 0.08s;
 }
 
 /* ── Email list items ──────────────────────────────── */

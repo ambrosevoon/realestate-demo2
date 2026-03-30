@@ -6,7 +6,7 @@ import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const shinyButtonVariants = cva(
-  'group relative isolate inline-flex shrink-0 cursor-pointer select-none rounded-[1.1rem]',
+  'group relative isolate inline-flex shrink-0 cursor-pointer select-none rounded-[1.1rem] transition-transform duration-200 ease-out hover:scale-[1.08] active:scale-[0.96] disabled:hover:scale-100',
   {
     variants: {
       variant: {
