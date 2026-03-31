@@ -4,7 +4,7 @@
 
 - **Completed:** ALL TASKS COMPLETE — full system live and E2E verified. Session 2 redesign in progress.
 - **In Progress:** Theme redesign — warm gradient palette + framer-motion animations
-- **Known Issues:** WF1 may miss emails that land in Gmail category tabs (Promotions/Social) rather than strict INBOX. The `labelIds: ["INBOX", "UNREAD"]` filter only catches primary inbox.
+- **Known Issues:** WF1 may miss emails in Gmail Promotions/Social tabs (filter is `in:inbox is:unread` — primary inbox only). Processes up to 50 emails per cycle.
 
 ## Session 2 Bugs Found & Fixed (2026-03-30)
 
@@ -53,7 +53,7 @@ None. System fully operational. Optional future improvements:
 | IqidW8hrIY2vaPFP | [REALESTATE DEMO] WFC – Approve & Send | POST /re-send | Active |
 | ry88tCTs3oKjjhAL | [REALESTATE DEMO] WFB – Mark No-Reply | POST /re-no-reply | Active |
 | KobSqJ9sbWOCEX3o | [REALESTATE DEMO] WFD – Archive | POST /re-archive | Active |
-| DYmTKLtNP11h7kEH | [REALESTATE DEMO] WF1 – Email Intake | Gmail Trigger (polling) | Active |
+| DYmTKLtNP11h7kEH | [REALESTATE DEMO] WF1 – Email Intake | Schedule every 2 min + Gmail batch | Active |
 
 ## Reference
 

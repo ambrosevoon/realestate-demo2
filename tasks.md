@@ -12,6 +12,7 @@
 - [x] Task 6: Build WFC – Approve & Send (IqidW8hrIY2vaPFP, POST /re-send) (2026-03-25)
 - [x] Task 7: Build WFB + WFD – Utility Workflows (ry88tCTs3oKjjhAL / KobSqJ9sbWOCEX3o) (2026-03-25)
 - [x] Task 8: Build WF1 – Email Intake (DYmTKLtNP11h7kEH, polls every minute) (2026-03-25)
+- [x] Task 8b: Rebuild WF1 — Schedule Trigger + batch Gmail fetch + deduplication (every 2 min, all unread at once) (2026-03-31)
 
 ## Phase 2 — React Frontend
 - [x] Task 9: Scaffold React/Vite project (2026-03-25)
@@ -35,3 +36,4 @@
 - [ ] Task 20: Redesign theme — warm gradient palette (purple accent, 21st.dev style)
 - [ ] Task 21: Apply GSAP gradient animation to Sidebar
 - [ ] Task 22: Add framer-motion blur-fade animations to EmailList items
+- [x] Task 23: Document all n8n workflows in docs/n8n-workflows.md (2026-03-31)
