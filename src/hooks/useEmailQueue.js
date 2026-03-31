@@ -1,7 +1,7 @@
 // src/hooks/useEmailQueue.js
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-const POLL_INTERVAL = 30_000
+const POLL_INTERVAL = 60_000
 import {
   listQueue,
   generateDraft as apiGenerateDraft,
