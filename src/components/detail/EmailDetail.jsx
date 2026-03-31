@@ -16,6 +16,69 @@ const label = {
   letterSpacing: '0.06em', marginBottom: 8,
 }
 
+/**
+ * Detects if a body string is a structured contact form submission.
+ * Heuristic: alternating label/value lines where labels are short (≤60 chars)
+ * and the pattern repeats ≥ 3 times.
+ */
+function parseFormBody(body) {
+  if (!body) return null
+  const lines = body.split('\n').map(l => l.trim()).filter(l => l.length > 0)
+  if (lines.length < 4) return null
+
+  const pairs = []
+  let i = 0
+  while (i < lines.length - 1) {
+    const potentialLabel = lines[i]
+    const potentialValue = lines[i + 1]
+    // Label heuristic: ≤ 60 chars, does not start with http, not a long sentence
+    const isLabel = potentialLabel.length <= 60 && !potentialLabel.startsWith('http') && potentialLabel.split(' ').length <= 8
+    if (isLabel) {
+      pairs.push({ label: potentialLabel, value: potentialValue })
+      i += 2
+    } else {
+      // Not a label/value pattern — bail out
+      return null
+    }
+  }
+
+  // Require at least 3 pairs to qualify as a form
+  if (pairs.length < 3) return null
+  return pairs
+}
+
+function FormBodyRenderer({ pairs }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {pairs.map(({ label: fieldLabel, value }, idx) => (
+        <div key={idx} style={{
+          borderRadius: 8,
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid var(--border)',
+          padding: '8px 12px',
+        }}>
+          <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--muted-foreground)', marginBottom: 3 }}>
+            {fieldLabel}
+          </p>
+          <p style={{ fontSize: 13, color: 'var(--foreground)', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
+            {value}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function EmailBodyRenderer({ body }) {
+  const formPairs = parseFormBody(body)
+  if (formPairs) return <FormBodyRenderer pairs={formPairs} />
+  return (
+    <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--foreground)', whiteSpace: 'pre-wrap' }}>
+      {body || '(no content)'}
+    </p>
+  )
+}
+
 export default function EmailDetail({ row, queue }) {
   const [draftText, setDraftText] = useState(row.draft_text || '')
 
@@ -57,9 +120,7 @@ export default function EmailDetail({ row, queue }) {
         <p style={{ ...label, color: 'var(--muted-foreground)' }}>
           Original Message
         </p>
-        <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--foreground)', whiteSpace: 'pre-wrap' }}>
-          {row.email_body_full || row.email_body_snippet || '(no content)'}
-        </p>
+        <EmailBodyRenderer body={row.email_body_full || row.email_body_snippet} />
       </div>
 
       {/* ── AI Summary ─────────────────────────────── */}
