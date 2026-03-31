@@ -81,12 +81,27 @@ function EmailBodyRenderer({ body }) {
 
 export default function EmailDetail({ row, queue }) {
   const [draftText, setDraftText] = useState(row.draft_text || '')
+  const [ownerInstructions, setOwnerInstructions] = useState('')
+  const [modifying, setModifying] = useState(false)
 
   useEffect(() => {
     setDraftText(row.draft_text || '')
   }, [row.id, row.draft_text])
 
   const isGenerating = (row.locked === true || row.locked === 'true' || row.locked === '1' || row.locked === 1) && row.locked_by === 'wfa'
+
+  async function handleModifyDraft() {
+    const base = 'Tone: Professional and friendly.'
+    const instructions = ownerInstructions.trim()
+      ? `${base} ${ownerInstructions.trim()}`
+      : base
+    setModifying(true)
+    try {
+      await queue.generateDraft(row.id, instructions)
+    } finally {
+      setModifying(false)
+    }
+  }
 
   return (
     <div className="animate-fade-slide-up" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -145,6 +160,60 @@ export default function EmailDetail({ row, queue }) {
       {(row.status === 'failed' || row.status === 'send_failed') && row.error_message && (
         <div style={{ padding: '8px 24px' }}>
           <p style={{ fontSize: 12, color: '#dc2626' }}>Error: {row.error_message}</p>
+        </div>
+      )}
+
+      {/* ── Owner's Instruction ────────────────────── */}
+      {['pending_review', 'draft_ready', 'failed', 'send_failed'].includes(row.status) && (
+        <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
+          <p style={{ ...label, color: 'var(--muted-foreground)' }}>Owner's Instruction</p>
+          <textarea
+            className="draft-textarea"
+            value={ownerInstructions}
+            onChange={e => setOwnerInstructions(e.target.value)}
+            placeholder="e.g. Keep it brief, mention we can do Saturday inspections, offer a callback…"
+            rows={3}
+            style={{
+              width: '100%', padding: 12, borderRadius: 8, resize: 'vertical',
+              background: 'var(--surface)', border: '1px solid var(--border)',
+              color: 'var(--foreground)', fontSize: 13, lineHeight: 1.6,
+              fontFamily: 'inherit', boxSizing: 'border-box',
+            }}
+          />
+          <button
+            onClick={handleModifyDraft}
+            disabled={modifying || isGenerating}
+            style={{
+              marginTop: 10,
+              display: 'inline-flex', alignItems: 'center', gap: 7,
+              padding: '7px 16px', borderRadius: 8, fontSize: 12, fontWeight: 600,
+              cursor: modifying || isGenerating ? 'not-allowed' : 'pointer',
+              opacity: modifying || isGenerating ? 0.6 : 1,
+              background: 'linear-gradient(135deg, rgba(147,51,234,0.18), rgba(236,72,153,0.12))',
+              border: '1px solid rgba(147,51,234,0.35)',
+              color: 'var(--dash-accent)',
+              transition: 'opacity 150ms, background 150ms',
+            }}
+          >
+            {(modifying || isGenerating) ? (
+              <>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                  strokeLinecap="round" strokeLinejoin="round"
+                  style={{ animation: 'spin 0.8s linear infinite' }}>
+                  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>
+                </svg>
+                Modifying…
+              </>
+            ) : (
+              <>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                  strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                Modify Draft
+              </>
+            )}
+          </button>
         </div>
       )}
 
