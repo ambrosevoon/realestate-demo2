@@ -64,6 +64,12 @@ function useIsMobile() {
   return isMobile
 }
 
+// ── Divider constants ──────────────────────────────────
+
+const PANE_MIN = 220
+const PANE_MAX = 600
+const PANE_DEFAULT = 300
+
 // ── Main component ─────────────────────────────────────
 
 export function Hero195() {
@@ -75,6 +81,43 @@ export function Hero195() {
   const { theme, toggleTheme } = useTheme()
   const isDark = theme === 'dark'
   const isMobile = useIsMobile()
+
+  // ── Resizable pane ──
+  const [listWidth, setListWidth] = useState(() => {
+    const saved = localStorage.getItem('sf-list-width')
+    return saved ? Math.max(PANE_MIN, Math.min(PANE_MAX, Number(saved))) : PANE_DEFAULT
+  })
+  const isDragging = useRef(false)
+  const dragStartX = useRef(0)
+  const dragStartWidth = useRef(0)
+
+  function handleDividerMouseDown(e) {
+    e.preventDefault()
+    isDragging.current = true
+    dragStartX.current = e.clientX
+    dragStartWidth.current = listWidth
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+
+    function onMouseMove(ev) {
+      if (!isDragging.current) return
+      const delta = ev.clientX - dragStartX.current
+      const next = Math.max(PANE_MIN, Math.min(PANE_MAX, dragStartWidth.current + delta))
+      setListWidth(next)
+    }
+
+    function onMouseUp() {
+      isDragging.current = false
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+      setListWidth(w => { localStorage.setItem('sf-list-width', String(w)); return w })
+      document.removeEventListener('mousemove', onMouseMove)
+      document.removeEventListener('mouseup', onMouseUp)
+    }
+
+    document.addEventListener('mousemove', onMouseMove)
+    document.addEventListener('mouseup', onMouseUp)
+  }
 
   const filteredRows = rows.filter(r => TAB_FILTERS[activeTab]?.includes(r.status))
   const selectedRow = rows.find(r => String(r.id) === String(selectedRowId)) || null
@@ -260,7 +303,7 @@ export function Hero195() {
   const listPane = showList && (
     <div
       className="overflow-y-auto"
-      style={{ width: 320, flexShrink: 0, borderRight: '1px solid var(--border)' }}
+      style={{ width: isMobile ? '100%' : listWidth, flexShrink: 0 }}
     >
       {loading && rows.length === 0 ? (
         <div className="flex flex-col gap-3 p-4">
@@ -290,6 +333,39 @@ export function Hero195() {
           />
         </div>
       )}
+    </div>
+  )
+
+  // ── Divider handle (desktop only) ──
+
+  const dividerHandle = !isMobile && (
+    <div
+      onMouseDown={handleDividerMouseDown}
+      title="Drag to resize"
+      style={{
+        width: 10,
+        flexShrink: 0,
+        cursor: 'col-resize',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        borderLeft: '1px solid var(--border)',
+        borderRight: '1px solid var(--border)',
+        background: 'transparent',
+        transition: 'background 150ms',
+        zIndex: 10,
+      }}
+      className="divider-handle"
+      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(147,51,234,0.08)' }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+    >
+      {/* Grip dots */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, pointerEvents: 'none' }}>
+        {[0,1,2].map(i => (
+          <div key={i} style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--muted-foreground)', opacity: 0.5 }} />
+        ))}
+      </div>
     </div>
   )
 
@@ -363,6 +439,7 @@ export function Hero195() {
       {tabsBar}
       <div className="flex-1 flex min-h-0">
         {listPane}
+        {dividerHandle}
         {detailPane}
       </div>
     </div>
