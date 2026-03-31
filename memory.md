@@ -2,9 +2,24 @@
 
 ## Current Status
 
-- **Completed:** ALL TASKS COMPLETE — full system live and E2E verified. Session 2 redesign in progress.
-- **In Progress:** Theme redesign — warm gradient palette + framer-motion animations
-- **Known Issues:** WF1 may miss emails in Gmail Promotions/Social tabs (filter is `in:inbox is:unread` — primary inbox only). Processes up to 50 emails per cycle.
+- **Completed:** ALL TASKS COMPLETE — full system live and E2E verified. Batch polling applied to both WF1 and dRBo95BrvhdSzvAd.
+- **In Progress:** Theme redesign — warm gradient palette + framer-motion animations (Tasks 17–22 not started)
+- **Known Issues:**
+  - Both workflows filter `in:inbox is:unread` — Promotions/Social tabs not covered
+  - n8n task runner on this VPS crashes when Code nodes use cross-node references (`$('NodeName').item.json`) — use Set nodes with expressions instead
+
+## Session 3 Bugs Found & Fixed (2026-03-31)
+
+### Bug 3: dRBo95BrvhdSzvAd only processing 1 email per minute (gmailTrigger)
+- **Root cause:** `gmailTrigger` polls every 1 minute minimum, creates one execution per email — fundamentally cannot batch-process
+- **Fix:** Replaced with Schedule Trigger (every 2 min) + `Get Unread Emails` (Gmail Get Messages, limit=5) + `Prepare Emails` Code node (strips to id/threadId/From/Subject/snippet) → processes 5 emails per cycle
+- **Also fixed:** AI Categorizer user message updated from Gmail Trigger field names (`$json.from`, `$json.subject`) to Gmail Get Messages field names (`$json.From`, `$json.Subject`, `$json.snippet`)
+
+### Bug 4: Format Data Code node crashing with "task runner disconnect" error
+- **Root cause:** n8n's external task runner process on this VPS crashes when Code nodes use cross-node references (`$('NodeName').item.json`). Happens even with 1 item.
+- **Diagnosis:** Minimal `return $input.all()` code succeeded. Only Code nodes with `$('NodeName').item.json` crash.
+- **Fix:** Replaced `Format Data` Code node with a **Set node** that uses n8n expressions (evaluated in main process, no task runner). Cross-node references work fine in Set node expressions.
+- **Rule:** On this n8n instance, never use `$('NodeName').item.json` inside Code nodes. Use Set nodes with expressions instead.
 
 ## Session 2 Bugs Found & Fixed (2026-03-30)
 

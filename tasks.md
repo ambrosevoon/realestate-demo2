@@ -30,6 +30,7 @@
 - [x] Fix: VITE_USE_LIVE_API env var had trailing \n — dashboard was always showing mock data (2026-03-30)
 - [x] Fix: WF1 Format Data node used .first() instead of .item — only 1 email saved per batch (2026-03-30)
 - [x] Rebrand: page title updated from "emaildash" to "SmartFlow | Email Dashboard" (2026-03-30)
+- [x] Task 24: Apply batch polling fix to dRBo95BrvhdSzvAd — Schedule Trigger + Get Unread Emails (5/cycle) + Prepare Emails + Set-node Format Data (2026-03-31)
 - [ ] Task 17: Install framer-motion, gsap, @radix-ui/react-slot, class-variance-authority, clsx, tailwind-merge
 - [ ] Task 18: Set up @/ path alias + cn utility
 - [ ] Task 19: Create ui/button.jsx + ui/AnimatedGroup.jsx
