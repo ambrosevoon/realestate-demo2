@@ -1,16 +1,13 @@
-# React + Vite
+# OpenHome AI — Real Estate Enquiry Automation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI-assisted email triage and reply drafting demo for real estate 
+agents. The agent provides a brief Owner Instruction (e.g. "price 
+guide is $1m+ in Canning Vale") and the system generates a fully 
+contextual, professional reply ready for one-click approval. 
+Human-in-the-loop throughout.
 
-Currently, two official plugins are available:
+Built with Next.js, TypeScript, and Tailwind. LLM-backed reply 
+generation, Gmail API integration, and n8n workflow orchestration 
+on the backend.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Live demo: https://realestate-demo2.vercel.app/
